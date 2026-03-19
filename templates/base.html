@@ -1,0 +1,23 @@
+{% load static %}   <!-- ✅ MUST BE FIRST -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>E-learning</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+<a href="/">Home</a> |
+<a href="/accounts/login/">Login</a> |
+<a href="/accounts/signup/">Signup</a> |
+<a href="/search/">Courses</a> |
+<a href="/analytics/">Admin Dashboard</a>
+
+<hr>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

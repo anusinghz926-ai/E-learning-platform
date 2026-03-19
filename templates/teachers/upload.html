@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Upload Course</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input name="title" placeholder="Course Title"><br><br>
+    <input name="price" placeholder="Price"><br><br>
+
+    <label>Video:</label>
+    <input type="file" name="video"><br><br>
+
+    <label>Notes:</label>
+    <input type="file" name="notes"><br><br>
+
+    <button type="submit">Upload</button>
+</form>
+
+{% endblock %}

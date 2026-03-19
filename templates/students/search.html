@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>All Courses</h2>
+
+{% for course in courses %}
+    <div>
+        <h3>{{ course.title }}</h3>
+        <p>Price: ₹{{ course.price }}</p>
+        <a href="/payments/buy/{{ course.id }}/">Buy</a>
+    </div>
+    <hr>
+{% endfor %}
+
+{% endblock %}

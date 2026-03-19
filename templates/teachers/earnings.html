@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>My Earnings</h2>
+
+{% for course in courses %}
+    <p>{{ course.title }} - ₹{{ course.price }}</p>
+{% endfor %}
+
+{% endblock %}

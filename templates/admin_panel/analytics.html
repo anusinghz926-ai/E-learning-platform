@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Analytics Dashboard</h2>
+
+<div>
+    <p><b>Total Students:</b> {{ students }}</p>
+    <p><b>Total Teachers:</b> {{ teachers }}</p>
+    <p><b>Total Courses:</b> {{ courses }}</p>
+    <p><b>Total Sales:</b> {{ sales }}</p>
+</div>
+
+<hr>
+
+<h3>Course Views</h3>
+
+{% for view in views %}
+    <p>{{ view.course.title }} → {{ view.views }} views</p>
+{% endfor %}
+
+{% endblock %}

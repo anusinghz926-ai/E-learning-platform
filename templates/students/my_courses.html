@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>My Courses</h2>
+
+{% for item in purchases %}
+    <div>
+        <h3>{{ item.course.title }}</h3>
+
+        <video width="400" controls>
+            <source src="{{ item.course.video.url }}">
+        </video>
+
+        <br><br>
+        <a href="{{ item.course.notes.url }}">Download Notes</a>
+    </div>
+    <hr>
+{% endfor %}
+
+{% endblock %}
