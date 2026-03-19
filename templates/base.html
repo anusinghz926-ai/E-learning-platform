@@ -1,4 +1,4 @@
-{% load static %}   <!-- ✅ MUST BE FIRST -->
+{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -8,16 +8,56 @@
 </head>
 <body>
 
-<a href="/">Home</a> |
-<a href="/accounts/login/">Login</a> |
-<a href="/accounts/signup/">Signup</a> |
-<a href="/search/">Courses</a> |
-<a href="/analytics/">Admin Dashboard</a>
+<!-- 🔥 NAVBAR -->
+<div class="navbar">
 
-<hr>
+    <!-- LEFT SIDE -->
+    <a href="/">Home</a>
 
-{% block content %}
-{% endblock %}
+    {% if request.user.is_authenticated %}
+
+        <!-- 👨‍🎓 STUDENT -->
+        {% if request.user.user_type == 'student' %}
+            <a href="/search/">Courses</a>
+            <a href="/my-courses/">My Courses</a>
+        {% endif %}
+
+        <!-- 👨‍🏫 TEACHER -->
+        {% if request.user.user_type == 'teacher' %}
+            <a href="/upload/">Upload</a>
+            <a href="/analytics/teacher-dashboard/">Teacher Dashboard</a>
+        {% endif %}
+
+        <!-- 👨‍💼 ADMIN -->
+        {% if request.user.is_superuser %}
+            <a href="/analytics/">Admin Dashboard</a>
+        {% endif %}
+
+        <!-- RIGHT SIDE -->
+        <div class="right">
+            👤 {{ request.user.username }}
+            <a href="/accounts/logout/">Logout</a>
+        </div>
+
+    {% else %}
+
+        <!-- 🔐 LOGINS -->
+        <a href="/accounts/student-login/">Student Login</a>
+        <a href="/accounts/teacher-login/">Teacher Login</a>
+        <a href="/accounts/login/">Login</a>
+
+        <!-- 📝 SIGNUP -->
+        <a href="/accounts/signup/">Signup</a>
+
+    {% endif %}
+
+</div>
+
+<!-- 🔥 CONTENT -->
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
 
 </body>
 </html>

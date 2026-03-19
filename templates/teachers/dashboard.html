@@ -1,9 +1,74 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
-<h2>Teacher Dashboard</h2>
+<h2>👨‍🏫 Teacher Dashboard</h2>
 
-<a href="/courses/upload/">Upload Course</a> |
-<a href="/teachers/earnings/">View Earnings</a>
+<!-- 🔥 STATS -->
+<div class="dashboard-stats">
+
+    <div class="stat-card">
+        <h3>💰 Earnings</h3>
+        <p>₹{{ total_earnings|default:0 }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>👨‍🎓 Students</h3>
+        <p>{{ total_students|default:0 }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>📊 Sales</h3>
+        <p>{{ total_sales|default:0 }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- 📊 CHART -->
+<h3>Analytics</h3>
+
+<canvas id="myChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const students = Number("{{ total_students|default:'0' }}");
+const sales = Number("{{ total_sales|default:'0' }}");
+
+const ctx = document.getElementById('myChart');
+
+if (ctx) {
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Students', 'Sales'],
+            datasets: [{
+                label: 'Performance',
+                data: [students, sales],
+                borderWidth: 1
+            }]
+        }
+    });
+}
+</script>
+
+<hr>
+
+<!-- 📚 PURCHASES -->
+<h2>📚 Purchased Courses</h2>
+
+{% if purchases %}
+    {% for p in purchases %}
+        <div class="card">
+            <h3>{{ p.course.title }}</h3>
+            <p><b>Price:</b> ₹{{ p.course.price }}</p>
+            <p><b>Student:</b> {{ p.student.username }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No sales yet</p>
+{% endif %}
 
 {% endblock %}

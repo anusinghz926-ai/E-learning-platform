@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="login-box">
-    <h2>Student Login</h2>
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+<div class="login-container">
+    <div class="login-box">
+        <h2>👨‍🎓 Student Login</h2>
 
-    <form method="POST">
-        {% csrf_token %}
-        
-        <input type="text" name="username" placeholder="Username" required>
-        <br><br>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
-        <input type="password" name="password" placeholder="Password" required>
-        <br><br>
+        <form method="POST">
+            {% csrf_token %}
 
-        <button type="submit">Login</button>
-    </form>
+            <input type="text" name="username" placeholder="Enter Username" required>
+
+            <input type="password" name="password" placeholder="Enter Password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="link-text">
+            Don't have an account? <a href="/accounts/signup/">Signup</a>
+        </p>
+    </div>
 </div>
+
 {% endblock %}

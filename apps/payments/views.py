@@ -1,14 +1,16 @@
 from django.shortcuts import redirect
-from apps.payments.models import Purchase
+from django.contrib.auth.decorators import login_required
 from apps.courses.models import Course
+from .models import Purchase
 
+@login_required
 def buy_course(request, id):
     course = Course.objects.get(id=id)
 
     Purchase.objects.create(
         student=request.user,
         course=course,
-        amount=course.price
+        is_paid=True
     )
 
-    return redirect('search')
+    return redirect('/my-courses/')

@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
 <h2>All Courses</h2>
 
 {% for course in courses %}
-    <div>
+    <div class="card">
         <h3>{{ course.title }}</h3>
-        <p>Price: ₹{{ course.price }}</p>
-        <a href="/payments/buy/{{ course.id }}/">Buy</a>
+        <p>{{ course.description }}</p>
+        <p><b>₹{{ course.price }}</b></p>
+
+        {% if request.user.user_type == 'student' %}
+            <a class="btn" href="/payments/buy/{{ course.id }}/">Buy</a>
+        {% endif %}
     </div>
-    <hr>
+{% empty %}
+    <p>No courses available</p>
 {% endfor %}
 
 {% endblock %}
