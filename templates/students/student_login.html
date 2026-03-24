@@ -2,28 +2,247 @@
 
 {% block content %}
 
-<div class="login-container">
-    <div class="login-box">
-        <h2>👨‍🎓 Student Login</h2>
+<style>
 
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+/* 🌐 BACKGROUND */
+body {
+    background: linear-gradient(-45deg, #0ea5e9, #38bdf8, #7dd3fc, #0ea5e9);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
 
-        <form method="POST">
-            {% csrf_token %}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-            <input type="text" name="username" placeholder="Enter Username" required>
+/* SHAPES */
+.shape {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.35;
+    animation: float 6s infinite ease-in-out;
+}
 
-            <input type="password" name="password" placeholder="Enter Password" required>
+.shape1 {
+    width: 240px;
+    height: 240px;
+    background: white;
+    top: 8%;
+    left: 8%;
+}
 
-            <button type="submit">Login</button>
-        </form>
+.shape2 {
+    width: 180px;
+    height: 180px;
+    background: #e0f2fe;
+    bottom: 8%;
+    right: 8%;
+}
 
-        <p class="link-text">
-            Don't have an account? <a href="/accounts/signup/">Signup</a>
-        </p>
-    </div>
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+    100% { transform: translateY(0px); }
+}
+
+/* CENTER */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* CARD */
+.login-card {
+    position: relative;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(18px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 360px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    color: white;
+}
+
+/* TITLE */
+.login-card h2 {
+    margin-bottom: 25px;
+}
+
+/* INPUT */
+.input-group {
+    position: relative;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px 42px 12px 14px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* EYE ICON */
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #1e293b;
+}
+
+/* ✅ REMEMBER FIX */
+.remember {
+    display: flex;
+    justify-content: side;
+    margin-bottom: 15px;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.remember-label input {
+    width: 16px;
+    height: 16px;
+    accent-color: #0ea5e9;
+    transform: scale(1.2);
+}
+
+.remember-label span {
+    white-space: nowrap;
+}
+
+/* BUTTON */
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    background: #0ea5e9;
+    border: none;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.login-card button:hover {
+    background: #0284c7;
+    box-shadow: 0 0 15px #38bdf8;
+}
+
+/* SWITCH */
+.switch {
+    margin-top: 15px;
+    cursor: pointer;
+    color: #e0f2fe;
+}
+
+.switch:hover {
+    text-decoration: underline;
+}
+
+/* ERROR */
+.error {
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+/* HIDE */
+.hidden {
+    display: none;
+}
+
+</style>
+
+<!-- SHAPES -->
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<div class="login-wrapper">
+<div class="login-card">
+
+    <h2 id="title">🎓 Student Login</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <!-- 🔐 LOGIN -->
+    <form method="POST" id="loginForm">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+
+        <div class="input-group">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁</span>
+        </div>
+
+        <div class="remember">
+            <label class="remember-label">
+                <input type="checkbox" name="remember">
+                <span>Remember me</span>
+            </label>
+        </div>
+
+        <button name="login">Login</button>
+    </form>
+
+    <!-- 📝 SIGNUP -->
+    <form method="POST" id="signupForm" class="hidden">
+        {% csrf_token %}
+
+        <input type="text" name="signup_username" placeholder="Username" required>
+        <input type="email" name="signup_email" placeholder="Email" required>
+        <input type="password" name="signup_password" placeholder="Password" required>
+        <input type="password" name="signup_confirm" placeholder="Confirm Password" required>
+
+        <button name="signup">Create Account</button>
+    </form>
+
+    <!-- SWITCH -->
+    <p class="switch" onclick="toggleForm()">New student? Signup</p>
+
 </div>
+</div>
+
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    password.type = password.type === "password" ? "text" : "password";
+}
+
+function toggleForm() {
+    const login = document.getElementById("loginForm");
+    const signup = document.getElementById("signupForm");
+    const title = document.getElementById("title");
+    const switchText = document.querySelector(".switch");
+
+    if (login.classList.contains("hidden")) {
+        login.classList.remove("hidden");
+        signup.classList.add("hidden");
+        title.innerText = "🎓 Student Login";
+        switchText.innerText = "New student? Signup";
+    } else {
+        login.classList.add("hidden");
+        signup.classList.remove("hidden");
+        title.innerText = "📝 Student Signup";
+        switchText.innerText = "Already have account? Login";
+    }
+}
+</script>
 
 {% endblock %}

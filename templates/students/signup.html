@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+/* 🌐 BACKGROUND */
+body {
+    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* CENTER */
+.signup-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+/* CARD */
+.signup-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 380px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* TITLE */
+.signup-card h2 {
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+.signup-card input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+.signup-card input:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 6px rgba(14,165,233,0.4);
+}
+
+/* BUTTON */
+.signup-card button {
+    width: 100%;
+    padding: 12px;
+    background: #0ea5e9;
+    border: none;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.signup-card button:hover {
+    background: #0284c7;
+}
+
+/* MESSAGE */
+.message {
+    margin-bottom: 10px;
+    color: red;
+}
+
+/* LINK */
+.signup-card a {
+    color: #0ea5e9;
+    text-decoration: none;
+}
+
+</style>
+
+<div class="signup-wrapper">
+    <div class="signup-card">
+
+        <h2>🎓 Student Signup</h2>
+
+        <!-- 🔥 MESSAGES -->
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+
+            <button type="submit">Create Account</button>
+
+        </form>
+
+        <p style="margin-top:15px;">
+            Already have an account? 
+            <a href="{% url 'student_login' %}">Login</a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

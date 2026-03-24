@@ -1,20 +1,151 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Upload Course</h2>
+<style>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input name="title" placeholder="Course Title"><br><br>
-    <input name="price" placeholder="Price"><br><br>
+/* 🌐 LIGHT BACKGROUND */
+body {
+    background: linear-gradient(135deg, #f1f5f9, #e0f7ff);
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    <label>Video:</label>
-    <input type="file" name="video"><br><br>
+/* 📦 CENTER WRAPPER */
+.upload-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
 
-    <label>Notes:</label>
-    <input type="file" name="notes"><br><br>
+/* 🧊 CARD */
+.upload-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px;
+    border-radius: 20px;
+    background: #ffffff;  /* FIXED */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    color: #1e293b;
+    animation: fadeUp 0.5s ease;
+}
 
-    <button type="submit">Upload</button>
-</form>
+/* ✨ ANIMATION */
+@keyframes fadeUp {
+    from {opacity:0; transform: translateY(30px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+/* 📝 TITLE */
+.upload-card h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* INPUT GROUP */
+.input-group {
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5f5;
+    outline: none;
+    font-size: 14px;
+    background: #f8fafc;
+    color: #1e293b;   /* FIXED TEXT */
+    transition: 0.3s;
+}
+
+/* PLACEHOLDER */
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+    color: #64748b;  /* FIXED */
+}
+
+/* FOCUS */
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+}
+
+/* FILE BOX */
+.file-box {
+    background: #f1f5f9;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+/* FILE INPUT */
+.file-box input {
+    color: #1e293b;
+}
+
+/* BUTTON */
+.upload-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, #0ea5e9, #6366f1);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+}
+
+</style>
+
+<div class="upload-wrapper">
+
+    <div class="upload-card">
+
+        <h2>🚀 Upload Your Course</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input type="text" name="title" placeholder="Course Title" required>
+            </div>
+
+            <div class="input-group">
+                <textarea name="description" rows="4" placeholder="Course Description"></textarea>
+            </div>
+
+            <div class="input-group">
+                <input type="number" name="price" placeholder="Price (₹)" required>
+            </div>
+
+            <div class="file-box">
+                <label>🎥 Upload Video</label>
+                <input type="file" name="video" required>
+            </div>
+
+            <div class="file-box">
+                <label>📄 Upload Notes</label>
+                <input type="file" name="notes">
+            </div>
+
+            <button type="submit" class="upload-btn">
+                Upload Course 🚀
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

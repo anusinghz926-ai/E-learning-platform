@@ -5,59 +5,230 @@
 <head>
     <title>E-learning</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+<style>
+
+/* CHATBOT */
+#chatbot-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0ea5e9;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+#chatbox {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    background: white;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.chat-header {
+    background: #0ea5e9;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#chat-messages {
+    height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chat-input {
+    display: flex;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+}
+
+.chat-input button {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
+.user-msg { text-align: right; margin: 5px; }
+.bot-msg { text-align: left; margin: 5px; }
+
+/* 🔥 NAVBAR STYLE IMPROVEMENT */
+.navbar a {
+    margin-right: 15px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<!-- 🔥 NAVBAR -->
+<!-- NAVBAR -->
 <div class="navbar">
 
-    <!-- LEFT SIDE -->
-    <a href="/">Home</a>
+    <div class="nav-left">
+        <a href="/">Home</a>
 
-    {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
 
-        <!-- 👨‍🎓 STUDENT -->
-        {% if request.user.user_type == 'student' %}
-            <a href="/search/">Courses</a>
-            <a href="/my-courses/">My Courses</a>
+            {% if request.user.user_type == 'student' %}
+                <a href="/search/">Courses</a>
+                <a href="/my-courses/">My Courses</a>
+            {% endif %}
+
+            {% if request.user.user_type == 'teacher' %}
+                <a href="/upload/">Upload</a>
+
+                <!-- ✅ NEW BUTTON -->
+                <a href="/analytics/teacher-dashboard/#uploadsSection">
+                    My Uploads
+                </a>
+
+                <a href="/analytics/teacher-dashboard/">Dashboard</a>
+            {% endif %}
+
+            {% if request.user.is_superuser %}
+                <a href="/analytics/admin-dashboard/">Admin</a>
+            {% endif %}
+
         {% endif %}
+    </div>
 
-        <!-- 👨‍🏫 TEACHER -->
-        {% if request.user.user_type == 'teacher' %}
-            <a href="/upload/">Upload</a>
-            <a href="/analytics/teacher-dashboard/">Teacher Dashboard</a>
-        {% endif %}
+    <div class="nav-right">
 
-        <!-- 👨‍💼 ADMIN -->
-        {% if request.user.is_superuser %}
-            <a href="/analytics/">Admin Dashboard</a>
-        {% endif %}
-
-        <!-- RIGHT SIDE -->
-        <div class="right">
-            👤 {{ request.user.username }}
+        {% if request.user.is_authenticated %}
+            <span>👤 {{ request.user.username }}</span>
             <a href="/accounts/logout/">Logout</a>
-        </div>
+        {% else %}
+            <a href="/accounts/student-login/">Student</a>
+            <a href="/accounts/teacher-login/">Teacher</a>
+            <a href="/accounts/login/">Admin</a>
+            <a href="/accounts/signup/">Signup</a>
+        {% endif %}
 
-    {% else %}
-
-        <!-- 🔐 LOGINS -->
-        <a href="/accounts/student-login/">Student Login</a>
-        <a href="/accounts/teacher-login/">Teacher Login</a>
-        <a href="/accounts/login/">Login</a>
-
-        <!-- 📝 SIGNUP -->
-        <a href="/accounts/signup/">Signup</a>
-
-    {% endif %}
+    </div>
 
 </div>
 
-<!-- 🔥 CONTENT -->
+<!-- CONTENT -->
 <div class="container">
     {% block content %}
     {% endblock %}
 </div>
+
+<!-- ================= CHATBOT ================= -->
+
+<script>
+let coursesData = {{ chatbot_courses|default:"[]"|safe }};
+</script>
+
+<!-- BUTTON -->
+<div id="chatbot-btn" onclick="toggleChat()">💬</div>
+
+<!-- CHATBOX -->
+<div id="chatbox">
+    <div class="chat-header">
+        🤖 Support
+        <span onclick="toggleChat()">✖</span>
+    </div>
+
+    <div id="chat-messages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Ask something..." onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+
+function toggleChat(){
+    let box = document.getElementById("chatbox");
+    box.style.display = box.style.display === "flex" ? "none" : "flex";
+}
+
+function handleEnter(e){
+    if(e.key === "Enter"){
+        sendMessage();
+    }
+}
+
+function sendMessage(){
+    let input = document.getElementById("userInput");
+    let msg = input.value.trim();
+
+    if(msg === "") return;
+
+    let chat = document.getElementById("chat-messages");
+
+    chat.innerHTML += `<div class="user-msg">🧑 ${msg}</div>`;
+    chat.innerHTML += `<div class="bot-msg" id="typing">🤖 typing...</div>`;
+
+    setTimeout(()=>{
+        let typing = document.getElementById("typing");
+        if(typing) typing.remove();
+
+        let reply = getBotReply(msg);
+
+        chat.innerHTML += `<div class="bot-msg">🤖 ${reply}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+
+    },500);
+
+    input.value = "";
+}
+
+function getBotReply(msg){
+
+    msg = msg.toLowerCase();
+
+    if(!coursesData || coursesData.length === 0){
+        return "⚠️ No courses available.";
+    }
+
+    let found = coursesData.find(c => 
+        msg.includes(c.title.toLowerCase())
+    );
+
+    if(found){
+        return `📚 ${found.title} costs ₹${found.price}`;
+    }
+
+    if(msg.includes("price") || msg.includes("cost")){
+        let list = coursesData.map(c => `${c.title} - ₹${c.price}`).join("<br>");
+        return `💰 All Courses:<br>${list}`;
+    }
+
+    if(msg.includes("how many")){
+        return `📊 Total courses: ${coursesData.length}`;
+    }
+
+    if(msg.includes("recommend")){
+        let r = coursesData[Math.floor(Math.random()*coursesData.length)];
+        return `⭐ Try ${r.title} (₹${r.price})`;
+    }
+
+    return "🤖 Ask: price, course name, or recommend course";
+}
+
+</script>
 
 </body>
 </html>

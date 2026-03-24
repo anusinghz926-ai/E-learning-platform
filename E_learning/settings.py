@@ -9,6 +9,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 # ✅ CUSTOM USER MODEL
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -22,10 +23,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 🔥 CHANNELS
+    'channels',
+
+    # YOUR APPS
     'apps.accounts',
     'apps.courses',
     'apps.payments',
     'apps.analytics',
+]
+
+
+# ✅ AUTH BACKEND
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
@@ -34,8 +45,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',   # ✅ IMPORTANT
-    'django.contrib.messages.middleware.MessageMiddleware',      # ✅ IMPORTANT
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
 
@@ -43,7 +54,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'E_learning.urls'
 
 
-# ✅ TEMPLATES (FIXED)
+# ✅ TEMPLATES
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -55,13 +66,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # 🔥 FIXED CONTEXT PROCESSOR (CORRECT)
+                'apps.courses.context_processors.chatbot_courses',
             ],
         },
     },
 ]
 
 
-# ✅ DATABASE (DEFAULT SQLITE)
+# ✅ DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,7 +84,7 @@ DATABASES = {
 }
 
 
-# ✅ PASSWORD VALIDATION (optional)
+# ✅ PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = []
 
 
@@ -86,3 +100,18 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # ✅ DEFAULT FIELD
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# =========================================
+# 🔥 CHANNELS (WEBSOCKET SUPPORT)
+# =========================================
+
+# ✅ VERY IMPORTANT (Fix crash issue)
+ASGI_APPLICATION = 'E_learning.asgi.application'
+
+# ✅ Channel layer
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}

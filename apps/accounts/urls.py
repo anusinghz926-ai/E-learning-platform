@@ -1,25 +1,16 @@
 from django.urls import path
-from .views import (
-    signup,
-    user_login,
-    user_logout,
-    student_login,
-    teacher_login
-)
+from . import views
 
 urlpatterns = [
-    # 🔐 Common (optional)
-    path('login/', user_login, name='login'),
 
-    # 👨‍🎓 Student
-    path('student-login/', student_login, name='student_login'),
+    path('login/', views.user_login, name='login'),
+    path('student-login/', views.student_login, name='student_login'),
+    path('teacher-login/', views.teacher_login, name='teacher_login'),
+    path('admin-login/', views.user_login, name='admin_login'),
 
-    # 👨‍🏫 Teacher
-    path('teacher-login/', teacher_login, name='teacher_login'),
+    path('logout/', views.user_logout, name='logout'),
 
-    # 📝 Signup
-    path('signup/', signup, name='signup'),
-
-    # 🚪 Logout
-    path('logout/', user_logout, name='logout'),
+    path('admin-panel/users/', views.manage_users, name='manage_users'),
+    path('admin-panel/delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('admin-panel/block-user/<int:user_id>/', views.toggle_block_user, name='block_user'),
 ]

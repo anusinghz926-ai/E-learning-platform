@@ -2,8 +2,181 @@
 
 {% block content %}
 
-<div class="login-container">
-    <div class="login-box">
+<style>
+
+/* 🌐 ANIMATED BACKGROUND */
+body {
+    background: linear-gradient(-45deg, #0ea5e9, #38bdf8, #7dd3fc, #0ea5e9);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ✨ FLOATING SHAPES */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.35;
+    animation: float 6s infinite ease-in-out;
+    z-index: 0;
+}
+
+.shape1 {
+    width: 240px;
+    height: 240px;
+    background: #ffffff;
+    top: 8%;
+    left: 8%;
+}
+
+.shape2 {
+    width: 180px;
+    height: 180px;
+    background: #e0f2fe;
+    bottom: 8%;
+    right: 8%;
+}
+
+/* 🔄 FLOAT */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+    100% { transform: translateY(0px); }
+}
+
+/* 🔥 CENTER */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 🔥 GLASS CARD */
+.login-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(18px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 360px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 2;
+    animation: fadeIn 1s ease;
+    transition: 0.3s;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+/* FADE IN */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+/* TITLE */
+.login-card h2 {
+    margin-bottom: 25px;
+    color: white;
+}
+
+/* INPUT */
+.input-group {
+    position: relative;
+}
+
+.login-card input[type="text"],
+.login-card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    outline: none;
+}
+
+/* INPUT FOCUS */
+.login-card input:focus {
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+}
+
+/* 👁 PASSWORD ICON */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+}
+
+/* ✅ REMEMBER */
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 15px;
+    font-size: 14px;
+    color: white;
+}
+
+.remember input {
+    width: 16px;
+    height: 16px;
+    accent-color: #0ea5e9;
+    cursor: pointer;
+}
+
+/* 🔥 GLOW BUTTON */
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    background: #0ea5e9;
+    border: none;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-card button:hover {
+    background: #0284c7;
+    box-shadow: 0 0 15px #38bdf8;
+}
+
+/* ERROR */
+.error {
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+/* LINK */
+.login-card a {
+    color: #e0f2fe;
+    text-decoration: none;
+}
+
+.login-card a:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+<!-- ✨ SHAPES -->
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<div class="login-wrapper">
+    <div class="login-card">
+
         <h2>👨‍🏫 Teacher Login</h2>
 
         {% if error %}
@@ -13,17 +186,31 @@
         <form method="POST">
             {% csrf_token %}
 
-            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="text" name="username" placeholder="Username" required>
 
-            <input type="password" name="password" placeholder="Enter Password" required>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
+
+            <div class="remember">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+            </div>
 
             <button type="submit">Login</button>
         </form>
 
-        <p class="link-text">
-            Don't have an account? <a href="/accounts/signup/">Signup</a>
-        </p>
+        <p>New teacher? <a href="/accounts/signup/">Signup</a></p>
+
     </div>
 </div>
+
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    password.type = password.type === "password" ? "text" : "password";
+}
+</script>
 
 {% endblock %}

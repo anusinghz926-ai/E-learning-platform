@@ -6,29 +6,31 @@ body {
     padding: 0;
 }
 
-/* 🔥 NAVBAR */
+/* 🔥 NAVBAR (UPDATED PROFESSIONAL) */
 .navbar {
-    background: #2c3e50;
-    padding: 15px 25px;
+    background: #ffffff;
+    padding: 15px 40px;
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .navbar a {
-    color: white;
+    color: #333;
     text-decoration: none;
     font-weight: 500;
+    margin-right: 20px;
 }
 
 .navbar a:hover {
-    color: #1abc9c;
+    color: #0ea5e9;
 }
 
-/* 🔥 RIGHT SIDE USER */
 .navbar .right {
-    margin-left: auto;
-    color: white;
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 
 /* 🔥 CONTAINER */
@@ -56,12 +58,14 @@ body {
     color: white;
     padding: 8px 12px;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 25px;
     display: inline-block;
+    transition: 0.3s;
 }
 
 .btn:hover {
     background: #16a085;
+    transform: translateY(-1px);
 }
 
 /* 🔥 FORMS */
@@ -71,6 +75,12 @@ input {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #0ea5e9;
+    outline: none;
 }
 
 button {
@@ -78,12 +88,14 @@ button {
     color: white;
     padding: 10px 15px;
     border: none;
-    border-radius: 6px;
+    border-radius: 25px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
     background: #2980b9;
+    transform: translateY(-1px);
 }
 
 /* 🔥 HEADINGS */
@@ -113,19 +125,21 @@ h2 {
     justify-content: center;
     align-items: center;
     height: 80vh;
+    background: linear-gradient(to right, #f0f7ff, #e0f2fe);
 }
 
 .login-box {
     background: #fff;
-    padding: 30px;
-    border-radius: 12px;
+    padding: 35px;
+    border-radius: 20px;
     width: 350px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
 }
 
 .login-box h2 {
     margin-bottom: 20px;
+    font-size: 26px;
 }
 
 .login-box input {
@@ -133,17 +147,18 @@ h2 {
     padding: 12px;
     margin: 10px 0;
     border-radius: 8px;
+    background: #f9fafb;
 }
 
 .login-box button {
     width: 100%;
     padding: 12px;
-    background: #2c3e50;
-    border-radius: 8px;
+    background: #0ea5e9;
+    border-radius: 25px;
 }
 
 .login-box button:hover {
-    background: #1a252f;
+    background: #0284c7;
 }
 
 /* 🔥 ERROR */
@@ -157,13 +172,216 @@ h2 {
     margin-top: 10px;
 }
 
-/* 🔥 RESPONSIVE */
-@media (max-width: 600px) {
-    .login-box {
-        width: 90%;
+/* ========================================= */
+/* 🔥 HOMEPAGE (PREPLY STYLE - NO IMAGE) */
+/* ========================================= */
+
+/* HERO SECTION */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px;
+    background: linear-gradient(to right, #f0f7ff, #e0f2fe);
+    border-radius: 0 0 30px 30px;
+}
+
+/* LEFT SIDE */
+.hero-left h1 {
+    font-size: 55px;
+    font-weight: 700;
+    color: #111;
+}
+
+.subtitle {
+    margin-top: 20px;
+    color: #555;
+    font-size: 18px;
+}
+
+/* SEARCH BOX */
+.search-box {
+    margin-top: 25px;
+    display: flex;
+    background: white;
+    border-radius: 30px;
+    overflow: hidden;
+    width: 350px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.search-box input {
+    border: none;
+    padding: 12px;
+    flex: 1;
+    outline: none;
+}
+
+.search-box button {
+    background: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #0284c7;
+}
+
+/* TAGS */
+.tags {
+    margin-top: 15px;
+}
+
+.tags span {
+    margin-right: 10px;
+    padding: 6px 12px;
+    background: #e0f2fe;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* RIGHT SIDE DESIGN */
+.hero-right {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+/* SHAPES */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.shape.big {
+    width: 260px;
+    height: 260px;
+    background: #38bdf8;
+    top: 40px;
+    right: 40px;
+}
+
+.shape.small {
+    width: 180px;
+    height: 180px;
+    background: #7dd3fc;
+    bottom: 0;
+    left: 0;
+}
+
+/* GLASS CARD */
+.glass-card {
+    position: absolute;
+    top: 120px;
+    left: 80px;
+    padding: 20px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* CATEGORY SECTION */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 40px;
+}
+
+.categories .card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-weight: 600;
+}
+
+.categories .card span {
+    display: none; /* 🔥 hides course count */
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
     }
 
-    input {
-        width: 100%;
+    .hero-right {
+        margin-top: 40px;
     }
+
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .categories {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* 🌙 DARK MODE */
+
+body.dark {
+    background: #0f172a !important;
+    color: #e2e8f0;
+}
+
+/* NAVBAR */
+body.dark .navbar {
+    background: #1e293b;
+}
+
+body.dark .navbar a {
+    color: #e2e8f0;
+}
+
+/* CARDS */
+body.dark .card,
+body.dark .course-card,
+body.dark .stat-card,
+body.dark .login-card,
+body.dark .purchase-item {
+    background: #1e293b !important;
+    color: #e2e8f0;
+}
+
+/* INPUT */
+body.dark input {
+    background: #0f172a;
+    color: white;
+    border: 1px solid #334155;
+}
+
+/* BUTTON */
+body.dark button,
+body.dark .btn {
+    background: #0284c7;
+}
+
+/* HEADINGS */
+body.dark h1,
+body.dark h2,
+body.dark h3 {
+    color: #f1f5f9;
+}
+
+/* PRICE */
+body.dark .price {
+    color: #22c55e;
+}
+
+/* SMOOTH TRANSITION */
+body {
+    transition: background 0.3s, color 0.3s;
 }

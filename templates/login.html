@@ -2,13 +2,175 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<style>
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username"><br>
-    <input type="password" name="password" placeholder="Password"><br>
-    <button type="submit">Login</button>
-</form>
+/* 🔥 ANIMATED BACKGROUND */
+body {
+    background: linear-gradient(-45deg, #0ea5e9, #6366f1, #38bdf8, #0ea5e9);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* WRAPPER */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    position: relative;
+    animation: fadeIn 1s ease;
+}
+
+/* 🔵 FLOATING BUBBLES */
+.bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+.bg-shape.one {
+    width: 300px;
+    height: 300px;
+    background: #ffffff;
+    top: 60px;
+    left: 120px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.bg-shape.two {
+    width: 220px;
+    height: 220px;
+    background: #e0f2fe;
+    bottom: 60px;
+    right: 120px;
+    animation: float 8s ease-in-out infinite;
+}
+
+/* FLOAT ANIMATION */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+    100% { transform: translateY(0px); }
+}
+
+/* FADE IN */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+/* 🔥 GLASS CARD */
+.login-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 360px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1;
+    transition: 0.3s;
+}
+
+.login-card:hover {
+    transform: translateY(-5px) scale(1.01);
+}
+
+/* TITLE */
+.login-card h2 {
+    margin-bottom: 25px;
+    color: white;
+}
+
+/* INPUT */
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.8);
+    outline: none;
+}
+
+/* INPUT FOCUS */
+.login-card input:focus {
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+}
+
+/* 🔥 GLOW BUTTON */
+.login-card button {
+    width: 100%;
+    padding: 12px;
+    background: #0ea5e9;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-card button:hover {
+    background: #0284c7;
+    box-shadow: 0 0 15px #38bdf8;
+}
+
+/* ERROR */
+.error {
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+/* LINK */
+.signup-link {
+    margin-top: 15px;
+    display: block;
+    color: white;
+    text-decoration: none;
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+<div class="login-wrapper">
+
+    <!-- 🔵 BUBBLES -->
+    <div class="bg-shape one"></div>
+    <div class="bg-shape two"></div>
+
+    <div class="login-card">
+        <h2>🔐 Login</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <a href="/accounts/signup/" class="signup-link">
+            Don't have an account? Signup
+        </a>
+    </div>
+
+</div>
 
 {% endblock %}

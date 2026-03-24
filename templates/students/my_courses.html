@@ -2,19 +2,35 @@
 
 {% block content %}
 
-<h2>My Courses</h2>
+<h2>📚 My Courses</h2>
 
-{% for p in purchases %}
-    <div class="card">
-        <h3>{{ p.course.title }}</h3>
+{% if purchases %}
 
-        <video width="400" controls>
-            <source src="{{ p.course.video.url }}">
-        </video>
+    <div class="dashboard-stats">
+        {% for p in purchases %}
+            <div class="course-card">
+                <h3>{{ p.course.title }}</h3>
 
-        <br>
-        <a class="btn" href="{{ p.course.notes.url }}">Download Notes</a>
+                <p>{{ p.course.description }}</p>
+
+                <h4>💰 Price: ₹{{ p.course.price }}</h4>
+
+                <p>👨‍🏫 Teacher: {{ p.course.teacher.username }}</p>
+
+                <!-- Optional button -->
+                <a href="#" class="btn">Start Learning</a>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
+
+{% else %}
+
+    <div class="card" style="text-align:center;">
+        <h3>😕 No Courses Yet</h3>
+        <p>You haven’t purchased any courses.</p>
+        <a href="/search/" class="btn">Browse Courses</a>
+    </div>
+
+{% endif %}
 
 {% endblock %}

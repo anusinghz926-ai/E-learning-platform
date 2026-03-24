@@ -9,6 +9,9 @@ class Course(models.Model):
     video = models.FileField(upload_to='lectures/')
     notes = models.FileField(upload_to='notes/')
     created_at = models.DateTimeField(auto_now_add=True)
+ 
+    is_active = models.BooleanField(default=True)  # ✅ NEW
+    
 
     def __str__(self):
         return self.title

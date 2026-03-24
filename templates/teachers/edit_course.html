@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.form-box {
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+}
+.form-box input, .form-box textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+button {
+    background: #0ea5e9;
+    color: white;
+    padding: 10px;
+    border: none;
+}
+</style>
+
+<div class="form-box">
+
+<h2>✏️ Edit Course</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="title" value="{{ course.title }}" required>
+
+    <textarea name="description">{{ course.description }}</textarea>
+
+    <input type="number" name="price" value="{{ course.price }}" required>
+
+    <input type="file" name="video">
+    <input type="file" name="notes">
+
+    <button type="submit">Update Course</button>
+</form>
+
+</div>
+
+{% endblock %}
