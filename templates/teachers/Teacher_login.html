@@ -4,13 +4,12 @@
 
 <style>
 
-/* 🌐 ANIMATED BACKGROUND */
+/* 🔥 ANIMATED BACKGROUND */
 body {
-    background: linear-gradient(-45deg, #0ea5e9, #38bdf8, #7dd3fc, #0ea5e9);
+    background: linear-gradient(-45deg, #0ea5e9, #6366f1, #38bdf8, #0ea5e9);
     background-size: 400% 400%;
     animation: gradientMove 10s ease infinite;
     font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
 }
 
 @keyframes gradientMove {
@@ -19,68 +18,70 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* ✨ FLOATING SHAPES */
-.shape {
+/* WRAPPER */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    position: relative;
+    animation: fadeIn 1s ease;
+}
+
+/* 🔵 FLOATING BUBBLES */
+.bg-shape {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.35;
-    animation: float 6s infinite ease-in-out;
     z-index: 0;
+    opacity: 0.4;
 }
 
-.shape1 {
-    width: 240px;
-    height: 240px;
+.bg-shape.one {
+    width: 300px;
+    height: 300px;
     background: #ffffff;
-    top: 8%;
-    left: 8%;
+    top: 60px;
+    left: 120px;
+    animation: float 6s ease-in-out infinite;
 }
 
-.shape2 {
-    width: 180px;
-    height: 180px;
+.bg-shape.two {
+    width: 220px;
+    height: 220px;
     background: #e0f2fe;
-    bottom: 8%;
-    right: 8%;
+    bottom: 60px;
+    right: 120px;
+    animation: float 8s ease-in-out infinite;
 }
 
-/* 🔄 FLOAT */
+/* FLOAT ANIMATION */
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-30px); }
     100% { transform: translateY(0px); }
 }
 
-/* 🔥 CENTER */
-.login-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* FADE IN */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
 }
 
 /* 🔥 GLASS CARD */
 .login-card {
     background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px);
     padding: 40px;
     border-radius: 20px;
     width: 360px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     text-align: center;
-    z-index: 2;
-    animation: fadeIn 1s ease;
+    z-index: 1;
     transition: 0.3s;
 }
 
 .login-card:hover {
-    transform: translateY(-5px);
-}
-
-/* FADE IN */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px);}
-    to { opacity: 1; transform: translateY(0);}
+    transform: translateY(-5px) scale(1.01);
 }
 
 /* TITLE */
@@ -90,18 +91,13 @@ body {
 }
 
 /* INPUT */
-.input-group {
-    position: relative;
-}
-
-.login-card input[type="text"],
-.login-card input[type="password"] {
+.login-card input {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
     border-radius: 10px;
     border: none;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.8);
     outline: none;
 }
 
@@ -110,38 +106,14 @@ body {
     box-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
 
-/* 👁 PASSWORD ICON */
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    cursor: pointer;
-}
-
-/* ✅ REMEMBER */
-.remember {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px 0 15px;
-    font-size: 14px;
-    color: white;
-}
-
-.remember input {
-    width: 16px;
-    height: 16px;
-    accent-color: #0ea5e9;
-    cursor: pointer;
-}
-
 /* 🔥 GLOW BUTTON */
 .login-card button {
     width: 100%;
     padding: 12px;
     background: #0ea5e9;
     border: none;
-    color: white;
+    color: #fff;
+    font-weight: bold;
     border-radius: 25px;
     cursor: pointer;
     transition: 0.3s;
@@ -152,64 +124,98 @@ body {
     box-shadow: 0 0 15px #38bdf8;
 }
 
+
+/* SWITCH */
+.switch {
+    margin-top: 15px;
+    color: #e0f2fe;
+    cursor: pointer;
+}
+
+.switch:hover {
+    text-decoration: underline;
+}
+
+/* HIDE */
+.hidden {
+    display: none;
+}
+
 /* ERROR */
 .error {
-    color: #ff4d4d;
-    margin-bottom: 10px;
-}
-
-/* LINK */
-.login-card a {
-    color: #e0f2fe;
-    text-decoration: none;
-}
-
-.login-card a:hover {
-    text-decoration: underline;
+    color: red;
 }
 
 </style>
 
-<!-- ✨ SHAPES -->
+<!-- SHAPES -->
 <div class="shape shape1"></div>
 <div class="shape shape2"></div>
 
 <div class="login-wrapper">
-    <div class="login-card">
+<div class="login-card">
 
-        <h2>👨‍🏫 Teacher Login</h2>
+    <h2 id="title">👨‍🏫 Teacher Login</h2>
 
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
 
-        <form method="POST">
-            {% csrf_token %}
+    <!-- LOGIN FORM -->
+    <form method="POST" id="loginForm">
+        {% csrf_token %}
 
-            <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="username" placeholder="Username" required>
 
-            <div class="input-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <span class="toggle-password" onclick="togglePassword()">👁</span>
-            </div>
+        <div class="input-group">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁</span>
+        </div>
 
-            <div class="remember">
-                <input type="checkbox" id="remember">
-                <label for="remember">Remember me</label>
-            </div>
+        <div class="remember">
+            <input type="checkbox">
+            <label>Remember me</label>
+        </div>
 
-            <button type="submit">Login</button>
-        </form>
+        <button type="submit" name="login">Login</button>
+    </form>
 
-        <p>New teacher? <a href="/accounts/signup/">Signup</a></p>
+    <!-- SIGNUP FORM -->
+    <form method="POST" id="signupForm" class="hidden">
+        {% csrf_token %}
 
-    </div>
+        <input type="text" name="signup_username" placeholder="Username" required>
+        <input type="email" name="signup_email" placeholder="Email" required>
+        <input type="password" name="signup_password" placeholder="Password" required>
+        <input type="password" name="signup_confirm" placeholder="Confirm Password" required>
+
+        <button type="submit" name="signup">Create Account</button>
+    </form>
+
+    <p class="switch" onclick="toggleForm()">New teacher? Signup</p>
+
+</div>
 </div>
 
 <script>
 function togglePassword() {
-    const password = document.getElementById("password");
-    password.type = password.type === "password" ? "text" : "password";
+    const p = document.getElementById("password");
+    p.type = p.type === "password" ? "text" : "password";
+}
+
+function toggleForm() {
+    const login = document.getElementById("loginForm");
+    const signup = document.getElementById("signupForm");
+    const title = document.getElementById("title");
+
+    login.classList.toggle("hidden");
+    signup.classList.toggle("hidden");
+
+    if (login.classList.contains("hidden")) {
+        title.innerText = "📝 Teacher Signup";
+    } else {
+        title.innerText = "👨‍🏫 Teacher Login";
+    }
 }
 </script>
 

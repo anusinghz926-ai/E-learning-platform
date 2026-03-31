@@ -107,48 +107,26 @@ def toggle_block_user(request, user_id):
 
 
 # =====================================================
-# 🔐 GENERAL LOGIN
+# 🔐 LOGIN + ADMIN SIGNUP (UNLIMITED ADMINS)
 # =====================================================
 def user_login(request):
-    if request.method == 'POST':
 
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-
-        if user:
-
-            if user.is_blocked:
-                return render(request, 'login.html', {
-                    'error': 'Your account has been blocked'
-                })
-
-            login(request, user)
-
-            if user.is_superuser:
-                return redirect('/analytics/')
-            elif user.user_type == 'teacher':
-                return redirect('/analytics/teacher-dashboard/')
-            else:
-                return redirect('/search/')
-
-        return render(request, 'login.html', {
-            'error': 'Invalid username or password'
-        })
-
-    return render(request, 'login.html')
-
-
-# =====================================================
-# 👨‍🎓 STUDENT LOGIN + SIGNUP (FINAL)
-# =====================================================
-def student_login(request):
+    # 👉 Prevent logged-in users from seeing login again
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('/analytics/')
+        elif request.user.user_type == 'teacher':
+            return redirect('/analytics/teacher-dashboard/')
+        else:
+            return redirect('/search/')
 
     if request.method == 'POST':
 
+        # =========================
         # 🔐 LOGIN
+        # =========================
         if 'login' in request.POST:
+
             username = request.POST.get('username')
             password = request.POST.get('password')
 
@@ -157,20 +135,99 @@ def student_login(request):
             if user:
 
                 if user.is_blocked:
+                    return render(request, 'login.html', {
+                        'error': 'Your account has been blocked'
+                    })
+
+                login(request, user)
+
+                if user.is_superuser:
+                    return redirect('/analytics/')
+                elif user.user_type == 'teacher':
+                    return redirect('/analytics/teacher-dashboard/')
+                else:
+                    return redirect('/search/')
+
+            return render(request, 'login.html', {
+                'error': 'Invalid username or password'
+            })
+
+
+        # =========================
+        # 📝 ADMIN SIGNUP
+        # =========================
+        elif 'signup' in request.POST:
+
+            username = request.POST.get('signup_username')
+            email = request.POST.get('signup_email')
+            password = request.POST.get('signup_password')
+            confirm = request.POST.get('signup_confirm')
+            admin_code = request.POST.get('admin_code')
+
+            # 🔐 SECURITY (CHANGE THIS VALUE)
+            if admin_code != "ADMIN123":
+                return render(request, 'login.html', {
+                    'error': 'Invalid Admin Code'
+                })
+
+            # VALIDATIONS
+            if password != confirm:
+                return render(request, 'login.html', {
+                    'error': 'Passwords do not match'
+                })
+
+            if User.objects.filter(username=username).exists():
+                return render(request, 'login.html', {
+                    'error': 'Username already exists'
+                })
+
+            # CREATE ADMIN
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+
+            user.is_staff = True
+            user.is_superuser = True
+            user.user_type = 'admin'
+            user.save()
+
+            login(request, user)
+
+            return redirect('/analytics/')
+
+    return render(request, 'login.html')
+
+
+# =====================================================
+# 👨‍🎓 STUDENT LOGIN + SIGNUP
+# =====================================================
+def student_login(request):
+
+    if request.method == 'POST':
+
+        if 'login' in request.POST:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user and user.user_type == 'student':
+
+                if user.is_blocked:
                     return render(request, 'students/student_login.html', {
                         'error': 'Your account has been blocked'
                     })
 
-                if user.user_type == 'student':
-                    login(request, user)
-                    return redirect('/search/')
+                login(request, user)
+                return redirect('/search/')
 
             return render(request, 'students/student_login.html', {
                 'error': 'Invalid credentials'
             })
 
 
-        # 📝 SIGNUP
         elif 'signup' in request.POST:
 
             username = request.POST.get('signup_username')
@@ -204,30 +261,61 @@ def student_login(request):
 
 
 # =====================================================
-# 👨‍🏫 TEACHER LOGIN
+# 👨‍🏫 TEACHER LOGIN + SIGNUP
 # =====================================================
 def teacher_login(request):
+
     if request.method == 'POST':
 
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        if 'login' in request.POST:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
 
-        if user:
+            if user and user.user_type == 'teacher':
 
-            if user.is_blocked:
-                return render(request, 'teachers/teacher_login.html', {
-                    'error': 'Your account has been blocked'
-                })
+                if user.is_blocked:
+                    return render(request, 'teachers/teacher_login.html', {
+                        'error': 'Your account has been blocked'
+                    })
 
-            if user.user_type == 'teacher':
                 login(request, user)
                 return redirect('/analytics/teacher-dashboard/')
 
-        return render(request, 'teachers/teacher_login.html', {
-            'error': 'Invalid teacher credentials'
-        })
+            return render(request, 'teachers/teacher_login.html', {
+                'error': 'Invalid teacher credentials'
+            })
+
+
+        elif 'signup' in request.POST:
+
+            username = request.POST.get('signup_username')
+            email = request.POST.get('signup_email')
+            password = request.POST.get('signup_password')
+            confirm = request.POST.get('signup_confirm')
+            
+            if password != confirm:
+                return render(request, 'teachers/teacher_login.html', {
+                    'error': 'Passwords do not match'
+                })
+
+            if User.objects.filter(username=username).exists():
+                return render(request, 'teachers/teacher_login.html', {
+                    'error': 'Username already exists'
+                })
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            user.user_type = 'teacher'
+            user.save()
+
+            return render(request, 'teachers/teacher_login.html', {
+                'success': 'Account created! Please login.'
+            })
 
     return render(request, 'teachers/teacher_login.html')
 
@@ -237,7 +325,7 @@ def teacher_login(request):
 # =====================================================
 def user_logout(request):
     logout(request)
-    return redirect('/accounts/login/')
+    return redirect('/accounts/admin-login/')
 
 
 # =====================================================
@@ -254,10 +342,7 @@ def search_courses(request):
         ).values_list('course_id', flat=True)
     )
 
-    if query:
-        courses = Course.objects.filter(title__icontains=query)
-    else:
-        courses = Course.objects.all()
+    courses = Course.objects.filter(title__icontains=query) if query else Course.objects.all()
 
     return render(request, 'students/search.html', {
         'courses': courses,
