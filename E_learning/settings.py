@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,7 +8,7 @@ SECRET_KEY = 'secret'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # ✅ CUSTOM USER MODEL
@@ -67,7 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                # 🔥 FIXED CONTEXT PROCESSOR (CORRECT)
+                # ✅ YOUR CONTEXT PROCESSOR
                 'apps.courses.context_processors.chatbot_courses',
             ],
         },
@@ -75,11 +76,11 @@ TEMPLATES = [
 ]
 
 
-# ✅ DATABASE
+# ✅ DATABASE (FIXED FOR VERCEL)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/tmp/db.sqlite3',   # 🔥 IMPORTANT FIX
     }
 }
 
@@ -91,6 +92,7 @@ AUTH_PASSWORD_VALIDATORS = []
 # ✅ STATIC FILES
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 🔥 IMPORTANT
 
 
 # ✅ MEDIA FILES
@@ -106,12 +108,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 🔥 CHANNELS (WEBSOCKET SUPPORT)
 # =========================================
 
-# ✅ VERY IMPORTANT (Fix crash issue)
 ASGI_APPLICATION = 'E_learning.asgi.application'
 
-# ✅ Channel layer
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
+
+
+# =========================================
+# 🔥 VERCEL FIX (IMPORTANT)
+# =========================================
+
+if 'vercel' in sys.argv:
+    DEBUG = True
