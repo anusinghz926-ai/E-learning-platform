@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import sys
+import dj_database_url   # ✅ NEW
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,8 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 🔥 CHANNELS
-    'channels',
+    # 🔥 CHANNELS (optional - Vercel doesn't support websocket)
+    # 'channels',
 
     # YOUR APPS
     'apps.accounts',
@@ -68,7 +69,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                # ✅ YOUR CONTEXT PROCESSOR
                 'apps.courses.context_processors.chatbot_courses',
             ],
         },
@@ -76,12 +76,14 @@ TEMPLATES = [
 ]
 
 
-# ✅ DATABASE (FIXED FOR VERCEL)
+# =========================================
+# 🔥 DATABASE (NEON POSTGRESQL FIX)
+# =========================================
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/db.sqlite3',   # 🔥 IMPORTANT FIX
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL")
+    )
 }
 
 
@@ -89,13 +91,19 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = []
 
 
+# =========================================
 # ✅ STATIC FILES
+# =========================================
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 🔥 IMPORTANT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
+# =========================================
 # ✅ MEDIA FILES
+# =========================================
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -105,20 +113,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # =========================================
-# 🔥 CHANNELS (WEBSOCKET SUPPORT)
+# 🔥 CHANNELS (DISABLED FOR VERCEL)
 # =========================================
 
-ASGI_APPLICATION = 'E_learning.asgi.application'
+# ASGI_APPLICATION = 'E_learning.asgi.application'
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",
+#     },
+# }
 
 
 # =========================================
-# 🔥 VERCEL FIX (IMPORTANT)
+# 🔥 VERCEL FIX
 # =========================================
 
 if 'vercel' in sys.argv:
