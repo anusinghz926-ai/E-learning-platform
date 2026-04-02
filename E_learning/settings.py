@@ -1,7 +1,12 @@
 from pathlib import Path
 import os
 import sys
-import dj_database_url   
+import dj_database_url
+
+# ☁️ CLOUDINARY
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,14 +30,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 🔥 CHANNELS (optional - Vercel doesn't support websocket)
-    # 'channels',
-
     # YOUR APPS
     'apps.accounts',
     'apps.courses',
     'apps.payments',
     'apps.analytics',
+
+    # ☁️ CLOUDINARY (IMPORTANT)
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 
@@ -68,7 +74,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
                 'apps.courses.context_processors.chatbot_courses',
             ],
         },
@@ -77,22 +82,37 @@ TEMPLATES = [
 
 
 # =========================================
-# 🔥 DATABASE (NEON POSTGRESQL FIX)
+# 🔥 DATABASE (NEON POSTGRESQL)
 # =========================================
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 
 
-# ✅ PASSWORD VALIDATION
+# =========================================
+# 🔑 PASSWORD VALIDATION
+# =========================================
+
 AUTH_PASSWORD_VALIDATORS = []
 
 
 # =========================================
-# ✅ STATIC FILES
+# 🌍 LANGUAGE
+# =========================================
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'Asia/Kolkata'
+USE_I18N = True
+USE_TZ = True
+
+
+# =========================================
+# 📁 STATIC FILES
 # =========================================
 
 STATIC_URL = '/static/'
@@ -101,28 +121,31 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # =========================================
-# ✅ MEDIA FILES
+# ❌ MEDIA FILES (DISABLED FOR VERCEL)
 # =========================================
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'  # local only
 
 
-# ✅ DEFAULT FIELD
+# =========================================
+# ☁️ CLOUDINARY CONFIG (🔥 MAIN FIX)
+# =========================================
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'E_learning',
+    'API_KEY': '649326131268495',
+    'API_SECRET': '3IaXGtyf1MCQxTZczC9JN007nUc',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+# =========================================
+# 🔢 DEFAULT FIELD
+# =========================================
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# =========================================
-# 🔥 CHANNELS (DISABLED FOR VERCEL)
-# =========================================
-
-# ASGI_APPLICATION = 'E_learning.asgi.application'
-
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels.layers.InMemoryChannelLayer",
-#     },
-# }
 
 
 # =========================================
