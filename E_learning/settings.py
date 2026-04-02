@@ -132,9 +132,9 @@ MEDIA_URL = '/media/'
 # =========================================
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
-    'API_KEY': os.environ.get('API_KEY'),
-    'API_SECRET': os.environ.get('API_SECRET'),
+    'CLOUD_NAME': os.environ.get('E_learning'),
+    'API_KEY': os.environ.get('649326131268495'),
+    'API_SECRET': os.environ.get('3IaXGtyf1MCQxTZczC9JN007nUc'),
 }
 
 STORAGES = {
