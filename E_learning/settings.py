@@ -125,7 +125,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # =========================================
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # local only
 
 
 # =========================================
@@ -133,13 +132,19 @@ MEDIA_ROOT = BASE_DIR / 'media'  # local only
 # =========================================
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'E_learning',
-    'API_KEY': '649326131268495',
-    'API_SECRET': '3IaXGtyf1MCQxTZczC9JN007nUc',
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 # =========================================
 # 🔢 DEFAULT FIELD
