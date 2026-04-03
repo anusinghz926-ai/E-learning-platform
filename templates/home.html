@@ -3,9 +3,152 @@
 
 {% block content %}
 
+<style>
+
+/* 🌈 BACKGROUND */
+body {
+    background: linear-gradient(-45deg, #e0e7ff, #f5f3ff, #e0f2fe);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* HERO SECTION */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 80px;
+    min-height: 80vh;
+}
+
+/* LEFT */
+.hero-left {
+    width: 50%;
+}
+
+.hero-left h1 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.subtitle {
+    margin: 15px 0;
+    color: #555;
+    font-size: 16px;
+}
+
+/* SEARCH BOX */
+.search-box {
+    display: flex;
+    margin-top: 20px;
+}
+
+.search-box input {
+    padding: 12px;
+    width: 300px;
+    border-radius: 25px 0 0 25px;
+    border: none;
+    outline: none;
+}
+
+.search-box button {
+    padding: 12px 20px;
+    border-radius: 0 25px 25px 0;
+    border: none;
+    background: linear-gradient(45deg, #6366f1, #38bdf8);
+    color: white;
+    cursor: pointer;
+}
+
+/* TAGS */
+.tags {
+    margin-top: 20px;
+}
+
+.tags span {
+    background: #eef2ff;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* RIGHT SIDE */
+.hero-right {
+    width: 40%;
+    position: relative;
+}
+
+/* SHAPES */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.shape.big {
+    width: 250px;
+    height: 250px;
+    background: #c7d2fe;
+    top: 50px;
+    left: 50px;
+}
+
+.shape.small {
+    width: 120px;
+    height: 120px;
+    background: #7dd3fc;
+    bottom: 40px;
+    right: 30px;
+}
+
+/* GLASS CARD */
+.glass-card {
+    position: absolute;
+    top: 120px;
+    left: 100px;
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.6);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.glass-card h3 {
+    margin-bottom: 5px;
+}
+
+/* CATEGORY SECTION */
+.categories {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 80px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card span {
+    font-size: 14px;
+    color: gray;
+}
+
+</style>
+
+
+<!-- HERO SECTION -->
 <section class="hero">
 
-    <!-- LEFT CONTENT -->
+    <!-- LEFT -->
     <div class="hero-left">
         <h1>Prepare to Learn <br> Confidently</h1>
 
@@ -26,7 +169,7 @@
         </div>
     </div>
 
-    <!-- RIGHT DESIGN (NO IMAGE) -->
+    <!-- RIGHT -->
     <div class="hero-right">
 
         <div class="shape big"></div>
@@ -42,13 +185,28 @@
 </section>
 
 
-<!-- CATEGORY SECTION -->
+<!-- CATEGORIES -->
 <section class="categories">
 
-    <div class="card">Python Courses <br><span>120+ Courses</span></div>
-    <div class="card">Web Development <br><span>200+ Courses</span></div>
-    <div class="card">AI & ML <br><span>90+ Courses</span></div>
-    <div class="card">Business <br><span>150+ Courses</span></div>
+    <div class="card">
+        Python Courses <br>
+        <span>120+ Courses</span>
+    </div>
+
+    <div class="card">
+        Web Development <br>
+        <span>200+ Courses</span>
+    </div>
+
+    <div class="card">
+        AI & ML <br>
+        <span>90+ Courses</span>
+    </div>
+
+    <div class="card">
+        Business <br>
+        <span>150+ Courses</span>
+    </div>
 
 </section>
 
