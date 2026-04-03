@@ -11,7 +11,7 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero {
     display: flex;
     justify-content: space-between;
@@ -33,30 +33,54 @@ body {
 .subtitle {
     margin: 15px 0;
     color: #555;
-    font-size: 16px;
 }
 
-/* SEARCH BOX */
+/* 🔥 SEARCH BOX */
 .search-box {
     display: flex;
     margin-top: 20px;
 }
 
+/* INPUT */
 .search-box input {
-    padding: 12px;
+    padding: 12px 18px;
     width: 300px;
-    border-radius: 25px 0 0 25px;
+    border-radius: 30px 0 0 30px;
     border: none;
     outline: none;
+    background: #f1f5f9;
+    transition: 0.3s;
 }
 
+.search-box input:focus {
+    background: white;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* 🚀 PREMIUM BUTTON */
 .search-box button {
-    padding: 12px 20px;
-    border-radius: 0 25px 25px 0;
+    padding: 12px 25px;
+    border-radius: 0 30px 30px 0;
     border: none;
-    background: linear-gradient(45deg, #6366f1, #38bdf8);
+    background: linear-gradient(135deg, #6366f1, #38bdf8);
     color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* ✨ HOVER */
+.search-box button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+    background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+}
+
+/* 💥 CLICK */
+.search-box button:active {
+    transform: scale(0.95);
 }
 
 /* TAGS */
@@ -72,7 +96,7 @@ body {
     font-size: 14px;
 }
 
-/* RIGHT SIDE */
+/* RIGHT */
 .hero-right {
     width: 40%;
     position: relative;
@@ -112,11 +136,7 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-.glass-card h3 {
-    margin-bottom: 5px;
-}
-
-/* CATEGORY SECTION */
+/* CATEGORY */
 .categories {
     display: flex;
     justify-content: space-around;
@@ -145,10 +165,9 @@ body {
 </style>
 
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
 
-    <!-- LEFT -->
     <div class="hero-left">
         <h1>Prepare to Learn <br> Confidently</h1>
 
@@ -158,7 +177,7 @@ body {
 
         <div class="search-box">
             <input type="text" placeholder="Search courses (Python, AI, Web...)">
-            <button>Explore</button>
+            <button>🔍 Explore</button>
         </div>
 
         <div class="tags">
@@ -169,9 +188,7 @@ body {
         </div>
     </div>
 
-    <!-- RIGHT -->
     <div class="hero-right">
-
         <div class="shape big"></div>
         <div class="shape small"></div>
 
@@ -179,7 +196,6 @@ body {
             <h3>Top Courses</h3>
             <p>5000+ Students Learning</p>
         </div>
-
     </div>
 
 </section>

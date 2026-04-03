@@ -1,86 +1,126 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>E-learning</title>
+
+    <!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
-<style>
+    <style>
 
-/* CHATBOT */
-#chatbot-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #0ea5e9;
-    color: white;
-    padding: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-}
+    /* ================= NAVBAR ================= */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 40px;
+        background: white;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
 
-#chatbox {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 320px;
-    background: white;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
+    .navbar a {
+        margin-right: 15px;
+        text-decoration: none;
+        font-weight: 500;
+        color: #333;
+        transition: 0.3s;
+    }
 
-.chat-header {
-    background: #0ea5e9;
-    color: white;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-}
+    .navbar a:hover {
+        color: #0ea5e9;
+    }
 
-#chat-messages {
-    height: 250px;
-    overflow-y: auto;
-    padding: 10px;
-}
+    .nav-right span {
+        margin-right: 10px;
+        font-weight: 500;
+    }
 
-.chat-input {
-    display: flex;
-}
+    /* ================= CONTAINER ================= */
+    .container {
+        padding: 30px;
+    }
 
-.chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-}
+    /* ================= CHATBOT ================= */
 
-.chat-input button {
-    background: #0ea5e9;
-    color: white;
-    border: none;
-    padding: 10px;
-}
+    #chatbot-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
 
-.user-msg { text-align: right; margin: 5px; }
-.bot-msg { text-align: left; margin: 5px; }
+    #chatbox {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 320px;
+        background: white;
+        border-radius: 12px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
 
-/* 🔥 NAVBAR STYLE IMPROVEMENT */
-.navbar a {
-    margin-right: 15px;
-    text-decoration: none;
-    font-weight: 500;
-}
+    .chat-header {
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
 
-</style>
+    #chat-messages {
+        height: 250px;
+        overflow-y: auto;
+        padding: 10px;
+    }
 
+    .chat-input {
+        display: flex;
+        border-top: 1px solid #eee;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        outline: none;
+    }
+
+    .chat-input button {
+        background: #0ea5e9;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    .user-msg {
+        text-align: right;
+        margin: 5px;
+    }
+
+    .bot-msg {
+        text-align: left;
+        margin: 5px;
+    }
+
+    </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
+<!-- ================= NAVBAR ================= -->
 <div class="navbar">
 
     <div class="nav-left">
@@ -95,12 +135,7 @@
 
             {% if request.user.user_type == 'teacher' %}
                 <a href="/upload/">Upload</a>
-
-                <!-- ✅ NEW BUTTON -->
-                <a href="/analytics/teacher-dashboard/#uploadsSection">
-                    My Uploads
-                </a>
-
+                <a href="/analytics/teacher-dashboard/#uploadsSection">My Uploads</a>
                 <a href="/analytics/teacher-dashboard/">Dashboard</a>
             {% endif %}
 
@@ -127,22 +162,21 @@
 
 </div>
 
-<!-- CONTENT -->
+<!-- ================= CONTENT ================= -->
 <div class="container">
     {% block content %}
     {% endblock %}
 </div>
 
-<!-- ================= CHATBOT ================= -->
-
+<!-- ================= CHATBOT DATA ================= -->
 <script>
-let coursesData = {{ chatbot_courses|default:"[]"|safe }};
+let coursesData = JSON.parse('{{ chatbot_courses|default:"[]"|escapejs }}');
 </script>
 
-<!-- BUTTON -->
+<!-- ================= CHATBOT BUTTON ================= -->
 <div id="chatbot-btn" onclick="toggleChat()">💬</div>
 
-<!-- CHATBOX -->
+<!-- ================= CHATBOX ================= -->
 <div id="chatbox">
     <div class="chat-header">
         🤖 Support
@@ -157,6 +191,7 @@ let coursesData = {{ chatbot_courses|default:"[]"|safe }};
     </div>
 </div>
 
+<!-- ================= CHATBOT SCRIPT ================= -->
 <script>
 
 function toggleChat(){
